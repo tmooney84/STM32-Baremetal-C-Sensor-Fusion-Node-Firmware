@@ -1,0 +1,153 @@
+Requirement already satisfied: pip in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (26.0.1)
+Requirement already satisfied: robotframework==6.1 in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from -r requirements.txt (line 2)) (6.1)
+Requirement already satisfied: pyyaml in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from -r requirements.txt (line 5)) (6.0.3)
+Requirement already satisfied: requests in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from -r requirements.txt (line 6)) (2.32.5)
+Requirement already satisfied: psutil in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from -r requirements.txt (line 7)) (7.2.2)
+Requirement already satisfied: pyserial in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from -r requirements.txt (line 8)) (3.5)
+Requirement already satisfied: charset_normalizer<4,>=2 in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from requests->-r requirements.txt (line 6)) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from requests->-r requirements.txt (line 6)) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from requests->-r requirements.txt (line 6)) (2.6.3)
+Requirement already satisfied: certifi>=2017.4.17 in /home/hanna/STM32CubeIDE/workspace_1.13.0/Register_Level-LED-Controller/renode-emulation/.venv/lib/python3.12/site-packages (from requests->-r requirements.txt (line 6)) (2026.1.4)
+Preparing suites
+Starting suites
+Running suite on Renode pid 23788 using port 49152: UART_debug_console.robot
++++++ Starting test 'UART_debug_console.LED Toggles On Via Button Interrupt'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log"
++++++ Finished test 'UART_debug_console.LED Toggles On Via Button Interrupt' in 11.95 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:38:18 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:38:18 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:38:18 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:38:18 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:38:18 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:38:18 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:38:26 PM, virt:  8001.1] Line containing >>BTN Pressed...<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.LED Toggles Off Via Button Interrupt'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log"
++++++ Finished test 'UART_debug_console.LED Toggles Off Via Button Interrupt' in 8.71 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:38:27 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:38:27 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:38:27 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:38:27 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:38:27 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:38:27 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:38:35 PM, virt:  8000.1] Line containing >>LED ON<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.UART Command Led On'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.UART_Command_Led_On.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.UART_Command_Led_On.fail0.log"
++++++ Finished test 'UART_debug_console.UART Command Led On' in 8.62 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:38:36 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:38:36 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:38:36 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:38:36 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:38:36 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:38:36 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:38:44 PM, virt:  8000.1] Line containing >>led on<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.UART Command Led Off'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.UART_Command_Led_Off.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.UART_Command_Led_Off.fail0.log"
++++++ Finished test 'UART_debug_console.UART Command Led Off' in 8.65 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:38:45 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:38:45 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:38:45 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:38:45 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:38:45 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:38:45 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:38:53 PM, virt:  8000.1] Line containing >>led on<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.UART Command Echo Message'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.UART_Command_Echo_Message.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.UART_Command_Echo_Message.fail0.log"
++++++ Finished test 'UART_debug_console.UART Command Echo Message' in 8.67 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:38:53 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:38:53 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:38:53 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:38:53 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:38:53 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:38:53 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:39:01 PM, virt:  8000.1] Line containing >>echo "Hello world!"<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.UART Command Sysinfo'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.UART_Command_Sysinfo.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.UART_Command_Sysinfo.fail0.log"
++++++ Finished test 'UART_debug_console.UART Command Sysinfo' in 8.69 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidOperationException: Terminal tester failed!
+      ║ 
+      ║ Full report:
+      ║ ([host: 4/18/2026 2:39:02 PM, virt:       0] Attached to UART event: success)
+      ║ [host: 4/18/2026 2:39:02 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+      ║ [host: 4/18/2026 2:39:02 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+      ║ [host: 4/18/2026 2:39:02 PM, virt:       0] press: CTRL+H for options
+      ║ [host: 4/18/2026 2:39:02 PM, virt:       0] 
+      ║ [host: 4/18/2026 2:39:02 PM, virt:       0] 
+      ║  [[no newline]]
+      ║ ([host: 4/18/2026 2:39:10 PM, virt:  8000.1] Line containing >>sysinfo<< event: failure)
+      ╚═
++++++ Starting test 'UART_debug_console.UART Help Menu Via Ctrl+H'
+!!!!! Emulation's state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.UART_Help_Menu_Via_Ctrl+H.fail0.save"
+!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.UART_Help_Menu_Via_Ctrl+H.fail0.log"
++++++ Finished test 'UART_debug_console.UART Help Menu Via Ctrl+H' in 0.66 seconds with status [91mfailed[0m
+      ╔═
+      ║ InvalidCastException: Object must implement IConvertible.
+      ╚═
+Suite UART_debug_console.robot failed in 56.59 seconds.
+Cleaning up suites
+Closing Renode pid 23788
+Renode pid 23788 closed
+Aggregating all robot results
+Output:  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/robot_output.xml
+Log:     /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/log.html
+Report:  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/report.html
+Some tests failed :( See the list of failed tests below and logs for details!
+Failed robot critical tests:
+	1. UART_debug_console.LED Toggles On Via Button Interrupt
+	2. UART_debug_console.UART Help Menu Via Ctrl+H
+	3. UART_debug_console.UART Command Sysinfo
+	4. UART_debug_console.UART Command Led Off
+	5. UART_debug_console.UART Command Led On
+	6. UART_debug_console.UART Command Echo Message
+	7. UART_debug_console.LED Toggles Off Via Button Interrupt
+------
+--- Checking Prerequisites ---
+Python version: 3.12.3 - OK
+Renode Renode v1.16.0.4379
+  build: 4ba223b9-202512300225
+  build type: Release
+  runtime: Mono 4.0.30319.42000 - OK
+
+--- Setting up Virtual Environment ---
+Installing/Updating dependencies...
+
+--- Running Test: UART_debug_console.robot ---
+
+Test Failed!

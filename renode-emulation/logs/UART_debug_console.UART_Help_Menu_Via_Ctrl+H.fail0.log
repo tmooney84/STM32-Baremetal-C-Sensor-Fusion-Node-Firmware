@@ -1,0 +1,9 @@
+14:53:35.7656 [INFO] Including script(s): /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.resc
+14:53:35.7665 [INFO] Old file /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.log moved to /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.log.27
+14:53:35.7679 [INFO] System bus created.
+14:53:36.2575 [INFO] sysbus: Loaded SVD: /tmp/renode-25370/19f69beb-a38a-472b-8e9a-b44358f8c5e2.tmp. Name: STM32F40x. Description: STM32F40x.
+14:53:36.2620 [INFO] nucleo_f411re: CPUs: ["nucleo_f411re.cpu0"] were added to a new GDB server created on port :3333
+14:53:36.2621 [INFO] nucleo_f411re: GDB server with all CPUs started on port :3333
+14:53:36.2682 [INFO] sysbus: Loading block of 7636 bytes length at 0x8000000.
+14:53:36.2684 [INFO] sysbus: Loading block of 624 bytes length at 0x8001DD4.
+14:53:36.2684 [INFO] sysbus: Loading block of 1536 bytes length at 0x8001E30.

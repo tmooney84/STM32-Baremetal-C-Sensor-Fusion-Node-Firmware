@@ -1,0 +1,21 @@
+14:53:27.0223 [INFO] Including script(s): /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.resc
+14:53:27.0230 [INFO] Old file /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.log moved to /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.log.26
+14:53:27.0242 [INFO] System bus created.
+14:53:27.5336 [INFO] sysbus: Loaded SVD: /tmp/renode-25370/4becd7a1-7154-4863-b69f-a3c8d8af9fed.tmp. Name: STM32F40x. Description: STM32F40x.
+14:53:27.5399 [INFO] nucleo_f411re: CPUs: ["nucleo_f411re.cpu0"] were added to a new GDB server created on port :3333
+14:53:27.5400 [INFO] nucleo_f411re: GDB server with all CPUs started on port :3333
+14:53:27.5454 [INFO] sysbus: Loading block of 7636 bytes length at 0x8000000.
+14:53:27.5456 [INFO] sysbus: Loading block of 624 bytes length at 0x8001DD4.
+14:53:27.5456 [INFO] sysbus: Loading block of 1536 bytes length at 0x8001E30.
+14:53:27.5578 [INFO] cpu0: Guessing VectorTableOffset value to be 0x8000000.
+14:53:27.5589 [INFO] cpu0: Setting initial values: PC = 0x8000AC9, SP = 0x20020000.
+14:53:27.5591 [INFO] nucleo_f411re: Machine started.
+14:53:27.5592 [WARNING] usart2: Received a character, but the receiver is not enabled, dropping.
+14:53:27.5651 [WARNING] usart2: Received a character, but the receiver is not enabled, dropping. (7)
+14:53:27.5652 [INFO] usart2: [host: 29.14ms (+29.14ms)|virt: 0.7ms (+0.7ms)] Hello from STM32 NUCLEO-F411RE...
+14:53:27.5654 [INFO] usart2: [host:  29.53ms (+0.38ms)|virt:    0.7ms (+0s)] UART DEBUG CONSOLE (System Ready)
+14:53:27.5657 [INFO] usart2: [host:  29.77ms (+0.24ms)|virt:    0.7ms (+0s)] press: CTRL+H for options
+14:53:27.5657 [INFO] usart2: [host:     29.8ms (+28µs)|virt:    0.7ms (+0s)] 
+14:53:27.5657 [INFO] usart2: [host:    29.83ms (+33µs)|virt:    0.7ms (+0s)] 
+14:53:35.5717 [INFO] nucleo_f411re: Machine paused.
+14:53:35.7298 [INFO] nucleo_f411re: Machine resumed.

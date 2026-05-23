@@ -1,0 +1,1282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Rebot 6.1 (Python 3.12.3 on linux)" generated="20260418 15:33:43.719" rpa="false" schemaversion="4">
+<suite id="s1" name="Test Suite" source="/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.robot">
+<kw name="Setup" library="renode-keywords" type="SETUP">
+<msg timestamp="20260418 15:33:25.093" level="TRACE">Arguments: [  ]</msg>
+<kw name="Evaluate" library="BuiltIn">
+<var>${SYSTEM}</var>
+<arg>platform.system()</arg>
+<arg>modules=platform</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Arguments: [ 'platform.system()' | modules='platform' ]</msg>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Return: 'Linux'</msg>
+<msg timestamp="20260418 15:33:25.094" level="INFO">${SYSTEM} = Linux</msg>
+<status status="PASS" starttime="20260418 15:33:25.093" endtime="20260418 15:33:25.094"/>
+</kw>
+<kw name="Set Variable If" library="BuiltIn">
+<var>${CONFIGURATION}</var>
+<arg>not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG}</arg>
+<arg>Debug</arg>
+<arg>${CONFIGURATION}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Arguments: [ 'not True and False' | 'Debug' | '${CONFIGURATION}' ]</msg>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Return: 'Release'</msg>
+<msg timestamp="20260418 15:33:25.094" level="INFO">${CONFIGURATION} = Release</msg>
+<status status="PASS" starttime="20260418 15:33:25.094" endtime="20260418 15:33:25.094"/>
+</kw>
+<kw name="Create List" library="BuiltIn">
+<var>@{PARAMS}</var>
+<arg>--robot-server-port</arg>
+<arg>${PORT_NUMBER}</arg>
+<arg>--hide-log</arg>
+<doc>Returns a list containing given items.</doc>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Arguments: [ '--robot-server-port' | '49152' | '--hide-log' ]</msg>
+<msg timestamp="20260418 15:33:25.094" level="TRACE">Return: ['--robot-server-port', '49152', '--hide-log']</msg>
+<msg timestamp="20260418 15:33:25.094" level="INFO">@{PARAMS} = [ --robot-server-port | 49152 | --hide-log ]</msg>
+<status status="PASS" starttime="20260418 15:33:25.094" endtime="20260418 15:33:25.094"/>
+</kw>
+<if>
+<branch type="IF" condition="${DISABLE_GUI}">
+<kw name="Insert Into List" library="Collections">
+<arg>${PARAMS}</arg>
+<arg>0</arg>
+<arg>--disable-gui</arg>
+<doc>Inserts ``value`` into ``list`` to the position specified with ``index``.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.094" endtime="20260418 15:33:25.095"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.094" endtime="20260418 15:33:25.095"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="File Should Exist" library="OperatingSystem">
+<arg>${DIRECTORY}/${BINARY_NAME}</arg>
+<arg>msg=Robot Framework remote server binary not found (${DIRECTORY}/${BINARY_NAME}). Did you forget to build it in ${CONFIGURATION} configuration?</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and not '${SYSTEM}' == 'Windows' and not ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>mono</arg>
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and '${SYSTEM}' == 'Windows'">
+<kw name="Start Process" library="Process">
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<arg>shell=true</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and not ${SERVER_REMOTE_DEBUG} and ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>dotnet ${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<arg>shell=true</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.095"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG} and not '${SYSTEM}' == 'Windows' and not ${NET_PLATFORM}">
+<kw name="Start Process" library="Process">
+<arg>mono</arg>
+<arg>--debug</arg>
+<arg>--debugger-agent\=transport\=dt_socket,address\=0.0.0.0:${SERVER_REMOTE_PORT},server\=y,suspend\=${SERVER_REMOTE_SUSPEND}</arg>
+<arg>${BINARY_NAME}</arg>
+<arg>@{PARAMS}</arg>
+<arg>cwd=${DIRECTORY}</arg>
+<doc>Starts a new process on background.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.096"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.096"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.095" endtime="20260418 15:33:25.096"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER} and ${SERVER_REMOTE_DEBUG} and '${SYSTEM}' == 'Windows'">
+<kw name="Fatal Error" library="BuiltIn">
+<arg>Windows doesn't support server remote debug option.</arg>
+<doc>Stops the whole test execution.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.096"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.096"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.096"/>
+</if>
+<if>
+<branch type="IF" condition="not '${SYSTEM}' == 'Windows'">
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>60s</arg>
+<arg>1s</arg>
+<arg>Import Library</arg>
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<msg timestamp="20260418 15:33:25.096" level="TRACE">Arguments: [ '60s' | '1s' | 'Import Library' | 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<kw name="Import Library" library="BuiltIn">
+<arg>Remote</arg>
+<arg>http://127.0.0.1:${PORT_NUMBER}/</arg>
+<doc>Imports a library with the given name and optional arguments.</doc>
+<msg timestamp="20260418 15:33:25.096" level="TRACE">Arguments: [ 'Remote' | 'http://127.0.0.1:${PORT_NUMBER}/' ]</msg>
+<msg timestamp="20260418 15:33:25.556" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.556"/>
+</kw>
+<msg timestamp="20260418 15:33:25.556" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.557"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.557"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.096" endtime="20260418 15:33:25.557"/>
+</if>
+<if>
+<branch type="IF" condition="'${SYSTEM}' == 'Windows'">
+<kw name="Wait Until Keyword Succeeds" library="BuiltIn">
+<arg>60s</arg>
+<arg>1s</arg>
+<arg>Import Library</arg>
+<arg>Remote</arg>
+<arg>http://localhost:${PORT_NUMBER}/</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:25.557" endtime="20260418 15:33:25.557"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.557" endtime="20260418 15:33:25.557"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.557" endtime="20260418 15:33:25.557"/>
+</if>
+<kw name="Setup Renode" library="renode-keywords">
+<msg timestamp="20260418 15:33:25.557" level="TRACE">Arguments: [  ]</msg>
+<kw name="Set Default Uart Timeout" library="Remote">
+<arg>${DEFAULT_UART_TIMEOUT}</arg>
+<msg timestamp="20260418 15:33:25.557" level="TRACE">Arguments: [ '8' ]</msg>
+<msg timestamp="20260418 15:33:25.578" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:25.557" endtime="20260418 15:33:25.578"/>
+</kw>
+<if>
+<branch type="IF" condition="${SAVE_LOGS}">
+<kw name="Enable Logging To Cache" library="Remote">
+<msg timestamp="20260418 15:33:25.578" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:25.583" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:25.578" endtime="20260418 15:33:25.583"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:25.578" endtime="20260418 15:33:25.583"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.578" endtime="20260418 15:33:25.583"/>
+</if>
+<kw name="Set Variable" library="BuiltIn">
+<var>${allowed_chars}</var>
+<arg>abcdefghijklmnopqrstuvwxyz01234567890_-</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:25.583" level="TRACE">Arguments: [ 'abcdefghijklmnopqrstuvwxyz01234567890_-' ]</msg>
+<msg timestamp="20260418 15:33:25.583" level="TRACE">Return: 'abcdefghijklmnopqrstuvwxyz01234567890_-'</msg>
+<msg timestamp="20260418 15:33:25.583" level="INFO">${allowed_chars} = abcdefghijklmnopqrstuvwxyz01234567890_-</msg>
+<status status="PASS" starttime="20260418 15:33:25.583" endtime="20260418 15:33:25.583"/>
+</kw>
+<kw name="Convert To Lower Case" library="String">
+<var>${metrics_fname}</var>
+<arg>${SUITE_NAME}</arg>
+<doc>Converts string to lower case.</doc>
+<msg timestamp="20260418 15:33:25.583" level="TRACE">Arguments: [ 'UART_debug_console' ]</msg>
+<msg timestamp="20260418 15:33:25.584" level="TRACE">Return: 'uart_debug_console'</msg>
+<msg timestamp="20260418 15:33:25.584" level="INFO">${metrics_fname} = uart_debug_console</msg>
+<status status="PASS" starttime="20260418 15:33:25.583" endtime="20260418 15:33:25.584"/>
+</kw>
+<kw name="Replace String" library="String">
+<var>${metrics_fname}</var>
+<arg>${metrics_fname}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:25.584" level="TRACE">Arguments: [ 'uart_debug_console' | ' ' | '_' ]</msg>
+<msg timestamp="20260418 15:33:25.584" level="TRACE">Return: 'uart_debug_console'</msg>
+<msg timestamp="20260418 15:33:25.584" level="INFO">${metrics_fname} = uart_debug_console</msg>
+<status status="PASS" starttime="20260418 15:33:25.584" endtime="20260418 15:33:25.584"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${metrics_fname}</var>
+<arg>${metrics_fname}</arg>
+<arg>[^${allowed_chars}]+</arg>
+<arg>${EMPTY}</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:25.584" level="TRACE">Arguments: [ 'uart_debug_console' | '[^abcdefghijklmnopqrstuvwxyz01234567890_-]+' | '' ]</msg>
+<msg timestamp="20260418 15:33:25.584" level="TRACE">Return: 'uart_debug_console'</msg>
+<msg timestamp="20260418 15:33:25.584" level="INFO">${metrics_fname} = uart_debug_console</msg>
+<status status="PASS" starttime="20260418 15:33:25.584" endtime="20260418 15:33:25.584"/>
+</kw>
+<kw name="Join Path" library="OperatingSystem">
+<var>${metrics_path}</var>
+<arg>${RESULTS_DIRECTORY}</arg>
+<arg>profiler-${metrics_fname}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20260418 15:33:25.585" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/' | 'profiler-uart_debug_console' ]</msg>
+<msg timestamp="20260418 15:33:25.585" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/profiler-uart_debug_console'</msg>
+<msg timestamp="20260418 15:33:25.585" level="INFO">${metrics_path} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/profiler-uart_debug_console</msg>
+<status status="PASS" starttime="20260418 15:33:25.585" endtime="20260418 15:33:25.585"/>
+</kw>
+<if>
+<branch type="IF" condition="${CREATE_EXECUTION_METRICS}">
+<kw name="Execute Command" library="Remote">
+<arg>EnableProfilerGlobally "${metrics_path}"</arg>
+<status status="NOT RUN" starttime="20260418 15:33:25.585" endtime="20260418 15:33:25.585"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:25.585" endtime="20260418 15:33:25.585"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:25.585" endtime="20260418 15:33:25.585"/>
+</if>
+<kw name="Reset Emulation" library="Remote">
+<msg timestamp="20260418 15:33:25.585" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:25.604" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:25.585" endtime="20260418 15:33:25.604"/>
+</kw>
+<msg timestamp="20260418 15:33:25.604" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:25.557" endtime="20260418 15:33:25.605"/>
+</kw>
+<msg timestamp="20260418 15:33:25.605" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:25.093" endtime="20260418 15:33:25.605"/>
+</kw>
+<test id="s1-t1" name="LED Toggles On Via Button Interrupt" line="15">
+<kw name="Setup Simulation" type="SETUP">
+<msg timestamp="20260418 15:33:25.605" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>include ${URI}</arg>
+<msg timestamp="20260418 15:33:25.605" level="TRACE">Arguments: [ 'include @/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.resc' ]</msg>
+<msg timestamp="20260418 15:33:27.734" level="TRACE">Return: "Current 'PATH' value is: /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation\n\n"</msg>
+<status status="PASS" starttime="20260418 15:33:25.605" endtime="20260418 15:33:27.734"/>
+</kw>
+<kw name="Create Terminal Tester" library="Remote">
+<arg>${UART}</arg>
+<msg timestamp="20260418 15:33:27.734" level="TRACE">Arguments: [ 'sysbus.usart2' ]</msg>
+<msg timestamp="20260418 15:33:27.744" level="TRACE">Return: 0</msg>
+<status status="PASS" starttime="20260418 15:33:27.734" endtime="20260418 15:33:27.744"/>
+</kw>
+<msg timestamp="20260418 15:33:27.744" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:25.605" endtime="20260418 15:33:27.744"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Press</arg>
+<msg timestamp="20260418 15:33:27.744" level="TRACE">Arguments: [ 'sysbus.gpioc.buttonPC13 Press' ]</msg>
+<msg timestamp="20260418 15:33:27.768" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:27.744" endtime="20260418 15:33:27.768"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>emulation RunFor "0.05"</arg>
+<msg timestamp="20260418 15:33:27.768" level="TRACE">Arguments: [ 'emulation RunFor "0.05"' ]</msg>
+<msg timestamp="20260418 15:33:28.078" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:27.768" endtime="20260418 15:33:28.078"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Release</arg>
+<msg timestamp="20260418 15:33:28.078" level="TRACE">Arguments: [ 'sysbus.gpioc.buttonPC13 Release' ]</msg>
+<msg timestamp="20260418 15:33:28.081" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:28.078" endtime="20260418 15:33:28.081"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>emulation RunFor "0.05"</arg>
+<msg timestamp="20260418 15:33:28.081" level="TRACE">Arguments: [ 'emulation RunFor "0.05"' ]</msg>
+<msg timestamp="20260418 15:33:28.104" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:28.081" endtime="20260418 15:33:28.104"/>
+</kw>
+<kw name="Wait For Line On Uart" library="Remote">
+<arg>BTN Pressed...</arg>
+<msg timestamp="20260418 15:33:28.104" level="TRACE">Arguments: [ 'BTN Pressed...' ]</msg>
+<msg timestamp="20260418 15:33:36.069" level="FAIL">InvalidOperationException: Terminal tester failed!
+
+Full report:
+([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)
+[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+ [[no newline]]
+([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)
+
+</msg>
+<msg timestamp="20260418 15:33:36.069" level="DEBUG">InvalidOperationException:   at (wrapper managed-to-native) System.Reflection.MonoMethod.InternalInvoke(System.Reflection.MonoMethod,object,object[],System.Exception&amp;)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in &lt;aeea2e33ea654cfabae63b60ba0e127a&gt;:0 
+</msg>
+<status status="FAIL" starttime="20260418 15:33:28.104" endtime="20260418 15:33:36.069"/>
+</kw>
+<kw name="Wait For Line On Uart" library="Remote">
+<arg>LED ON</arg>
+<status status="NOT RUN" starttime="20260418 15:33:36.069" endtime="20260418 15:33:36.069"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<var>${state}</var>
+<arg>${LED} State</arg>
+<status status="NOT RUN" starttime="20260418 15:33:36.069" endtime="20260418 15:33:36.069"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${state}</arg>
+<arg>True</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:36.069" endtime="20260418 15:33:36.069"/>
+</kw>
+<kw name="Test Teardown" library="renode-keywords" type="TEARDOWN">
+<msg timestamp="20260418 15:33:36.070" level="TRACE">Arguments: [  ]</msg>
+<kw name="Stop Profiler" library="renode-keywords">
+<msg timestamp="20260418 15:33:36.070" level="TRACE">Arguments: [  ]</msg>
+<if>
+<branch type="IF" condition="${PROFILER_PROCESS}">
+<kw name="Terminate Process" library="Process">
+<arg>${PROFILER_PROCESS}</arg>
+<doc>Stops the process gracefully or forcefully.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.071"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${PROFILER_PROCESS}</arg>
+<arg>None</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.071"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:36.070" endtime="20260418 15:33:36.071"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:36.070" endtime="20260418 15:33:36.071"/>
+</if>
+<msg timestamp="20260418 15:33:36.071" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.070" endtime="20260418 15:33:36.071"/>
+</kw>
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<var>${failed}</var>
+<arg>Set Variable</arg>
+<arg>True</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:36.071" level="TRACE">Arguments: [ 'Set Variable' | 'True' ]</msg>
+<kw name="Set Variable" library="BuiltIn">
+<arg>True</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:36.071" level="TRACE">Arguments: [ 'True' ]</msg>
+<msg timestamp="20260418 15:33:36.071" level="TRACE">Return: 'True'</msg>
+<status status="PASS" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.071"/>
+</kw>
+<msg timestamp="20260418 15:33:36.071" level="TRACE">Return: 'True'</msg>
+<msg timestamp="20260418 15:33:36.071" level="INFO">${failed} = True</msg>
+<status status="PASS" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.071"/>
+</kw>
+<if>
+<branch type="IF" condition="${failed}">
+<kw name="Strip String" library="String">
+<var>${message}</var>
+<arg>${TEST_MESSAGE}</arg>
+<arg>mode=right</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Arguments: [ 'InvalidOperationException: Terminal tester failed!\n\nFull report:\n([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)\n[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...\n[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)\n[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options\n[host: 4/18/2026 3:33:28 PM, virt:       0] \n[host: 4/18/2026 3:33:28 PM, virt:       0] \n [[no newline]]\n([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)\n\n' | mode='right' ]</msg>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Return: 'InvalidOperationException: Terminal tester failed!\n\nFull report:\n([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)\n[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...\n[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)\n[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options\n[host: 4/18/2026 3:33:28 PM, virt:       0] \n[host: 4/18/2026 3:33:28 PM, virt:       0] \n [[no newline]]\n([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)'</msg>
+<msg timestamp="20260418 15:33:36.072" level="INFO">${message} = InvalidOperationException: Terminal tester failed!
+
+Full report:
+([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)
+[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from ST...</msg>
+<status status="PASS" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.072"/>
+</kw>
+<kw name="Set Test Message" library="BuiltIn">
+<arg>${message}</arg>
+<doc>Sets message for the current test case.</doc>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Arguments: [ 'InvalidOperationException: Terminal tester failed!\n\nFull report:\n([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)\n[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...\n[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)\n[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options\n[host: 4/18/2026 3:33:28 PM, virt:       0] \n[host: 4/18/2026 3:33:28 PM, virt:       0] \n [[no newline]]\n([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)' ]</msg>
+<msg timestamp="20260418 15:33:36.072" level="INFO">Set test message to:
+InvalidOperationException: Terminal tester failed!
+
+Full report:
+([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)
+[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+ [[no newline]]
+([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)</msg>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.072" endtime="20260418 15:33:36.072"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.072"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:36.071" endtime="20260418 15:33:36.072"/>
+</if>
+<kw name="Run Keyword If Timeout Occurred" library="BuiltIn">
+<var>${timed_out}</var>
+<arg>Set Variable</arg>
+<arg>True</arg>
+<doc>Runs the given keyword if either a test or a keyword timeout has occurred.</doc>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Arguments: [ 'Set Variable' | 'True' ]</msg>
+<msg timestamp="20260418 15:33:36.072" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:36.072" level="INFO">${timed_out} = None</msg>
+<status status="PASS" starttime="20260418 15:33:36.072" endtime="20260418 15:33:36.072"/>
+</kw>
+<if>
+<branch type="IF" condition="${timed_out}">
+<return>
+<status status="NOT RUN" starttime="20260418 15:33:36.072" endtime="20260418 15:33:36.072"/>
+</return>
+<status status="NOT RUN" starttime="20260418 15:33:36.072" endtime="20260418 15:33:36.072"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:36.072" endtime="20260418 15:33:36.072"/>
+</if>
+<if>
+<branch type="IF" condition="${CREATE_SNAPSHOT_ON_FAIL}">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Create Snapshot Of Failed Test</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:36.073" level="TRACE">Arguments: [ 'Create Snapshot Of Failed Test' ]</msg>
+<kw name="Create Snapshot Of Failed Test" library="renode-keywords">
+<msg timestamp="20260418 15:33:36.073" level="TRACE">Arguments: [  ]</msg>
+<kw name="Return From Keyword If" library="BuiltIn">
+<arg>'skipped' in @{TEST TAGS}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<msg timestamp="20260418 15:33:36.073" level="TRACE">Arguments: [ "'skipped' in []" ]</msg>
+<msg timestamp="20260418 15:33:36.073" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.073" endtime="20260418 15:33:36.073"/>
+</kw>
+<kw name="Get Variable Value" library="BuiltIn">
+<var>${retry_index}</var>
+<arg>\${RETRYFAILED_RETRY_INDEX}</arg>
+<arg>0</arg>
+<doc>Returns variable value or ``default`` if the variable does not exist.</doc>
+<msg timestamp="20260418 15:33:36.073" level="TRACE">Arguments: [ '\\${RETRYFAILED_RETRY_INDEX}' | '0' ]</msg>
+<msg timestamp="20260418 15:33:36.074" level="TRACE">Return: '0'</msg>
+<msg timestamp="20260418 15:33:36.074" level="INFO">${retry_index} = 0</msg>
+<status status="PASS" starttime="20260418 15:33:36.073" endtime="20260418 15:33:36.074"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${test_name}</var>
+<arg>${SUITE NAME}.${TEST NAME}.fail${retry_index}.save</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:36.074" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0.save' ]</msg>
+<msg timestamp="20260418 15:33:36.074" level="TRACE">Return: 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:36.074" level="INFO">${test_name} = UART_debug_console.LED Toggles On Via Button Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:36.074" endtime="20260418 15:33:36.074"/>
+</kw>
+<kw name="Sanitize Test Name" library="renode-keywords">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<msg timestamp="20260418 15:33:36.074" level="TRACE">Arguments: [ ${test_name}='UART_debug_console.LED Toggles On Via Button Interrupt.fail0.save' ]</msg>
+<kw name="Replace String" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0.save' | ' ' | '_' ]</msg>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:36.075" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:36.074" endtime="20260418 15:33:36.075"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>[/""]</arg>
+<arg>-</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Arguments: [ 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save' | '[/""]' | '-' ]</msg>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:36.075" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:36.075" endtime="20260418 15:33:36.075"/>
+</kw>
+<return>
+<value>${test_name}</value>
+<status status="PASS" starttime="20260418 15:33:36.075" endtime="20260418 15:33:36.075"/>
+</return>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:36.075" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:36.074" endtime="20260418 15:33:36.075"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${snapshots_dir}</var>
+<arg>${RESULTS_DIRECTORY}/snapshots</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots' ]</msg>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots'</msg>
+<msg timestamp="20260418 15:33:36.075" level="INFO">${snapshots_dir} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots</msg>
+<status status="PASS" starttime="20260418 15:33:36.075" endtime="20260418 15:33:36.075"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${snapshots_dir}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20260418 15:33:36.075" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots' ]</msg>
+<msg timestamp="20260418 15:33:36.076" level="INFO" html="true">Directory '&lt;a href="file:///home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/snapshots"&gt;/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/snapshots&lt;/a&gt;' already exists.</msg>
+<msg timestamp="20260418 15:33:36.076" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.075" endtime="20260418 15:33:36.076"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${snapshot_path}</var>
+<arg>"${snapshots_dir}/${test_name}"</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:36.076" level="TRACE">Arguments: [ '"/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:36.076" level="TRACE">Return: '"/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"'</msg>
+<msg timestamp="20260418 15:33:36.076" level="INFO">${snapshot_path} = "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"</msg>
+<status status="PASS" starttime="20260418 15:33:36.076" endtime="20260418 15:33:36.076"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>Save ${snapshot_path}</arg>
+<msg timestamp="20260418 15:33:36.076" level="TRACE">Arguments: [ 'Save "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:37.157" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:36.076" endtime="20260418 15:33:37.157"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>!!!!! Emulation's state saved to ${snapshot_path}</arg>
+<doc>Logs the given message to the console.</doc>
+<msg timestamp="20260418 15:33:37.158" level="TRACE">Arguments: [ '!!!!! Emulation\'s state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:37.158" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.158" endtime="20260418 15:33:37.158"/>
+</kw>
+<msg timestamp="20260418 15:33:37.158" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.073" endtime="20260418 15:33:37.158"/>
+</kw>
+<msg timestamp="20260418 15:33:37.158" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.073" endtime="20260418 15:33:37.158"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:36.073" endtime="20260418 15:33:37.158"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:36.072" endtime="20260418 15:33:37.158"/>
+</if>
+<if>
+<branch type="IF" condition="${SAVE_LOGS}">
+<if>
+<branch type="IF" condition="&quot;${SAVE_LOGS_WHEN}&quot; == &quot;Always&quot;">
+<kw name="Save Test Log" library="renode-keywords">
+<status status="NOT RUN" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.159"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.159"/>
+</branch>
+<branch type="ELSE IF" condition="&quot;${SAVE_LOGS_WHEN}&quot; == &quot;Fail&quot;">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Save Test Log</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:37.159" level="TRACE">Arguments: [ 'Save Test Log' ]</msg>
+<kw name="Save Test Log" library="renode-keywords">
+<msg timestamp="20260418 15:33:37.159" level="TRACE">Arguments: [  ]</msg>
+<kw name="Return From Keyword If" library="BuiltIn">
+<arg>'skipped' in @{TEST TAGS}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<msg timestamp="20260418 15:33:37.160" level="TRACE">Arguments: [ "'skipped' in []" ]</msg>
+<msg timestamp="20260418 15:33:37.160" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.160"/>
+</kw>
+<kw name="Get Variable Value" library="BuiltIn">
+<var>${retry_index}</var>
+<arg>\${RETRYFAILED_RETRY_INDEX}</arg>
+<arg>0</arg>
+<doc>Returns variable value or ``default`` if the variable does not exist.</doc>
+<msg timestamp="20260418 15:33:37.160" level="TRACE">Arguments: [ '\\${RETRYFAILED_RETRY_INDEX}' | '0' ]</msg>
+<msg timestamp="20260418 15:33:37.161" level="TRACE">Return: '0'</msg>
+<msg timestamp="20260418 15:33:37.161" level="INFO">${retry_index} = 0</msg>
+<status status="PASS" starttime="20260418 15:33:37.160" endtime="20260418 15:33:37.161"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${test_name}</var>
+<arg>${SUITE NAME}.${TEST NAME}.fail${retry_index}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:37.161" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0' ]</msg>
+<msg timestamp="20260418 15:33:37.161" level="TRACE">Return: 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:37.161" level="INFO">${test_name} = UART_debug_console.LED Toggles On Via Button Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:37.161" endtime="20260418 15:33:37.161"/>
+</kw>
+<kw name="Sanitize Test Name" library="renode-keywords">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<msg timestamp="20260418 15:33:37.161" level="TRACE">Arguments: [ ${test_name}='UART_debug_console.LED Toggles On Via Button Interrupt.fail0' ]</msg>
+<kw name="Replace String" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles On Via Button Interrupt.fail0' | ' ' | '_' ]</msg>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:37.162" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:37.162" endtime="20260418 15:33:37.162"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>[/""]</arg>
+<arg>-</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Arguments: [ 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0' | '[/""]' | '-' ]</msg>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:37.162" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:37.162" endtime="20260418 15:33:37.162"/>
+</kw>
+<return>
+<value>${test_name}</value>
+<status status="PASS" starttime="20260418 15:33:37.162" endtime="20260418 15:33:37.162"/>
+</return>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Return: 'UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:37.162" level="INFO">${test_name} = UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:37.161" endtime="20260418 15:33:37.162"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${logs_dir}</var>
+<arg>${RESULTS_DIRECTORY}/logs</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs' ]</msg>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs'</msg>
+<msg timestamp="20260418 15:33:37.162" level="INFO">${logs_dir} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs</msg>
+<status status="PASS" starttime="20260418 15:33:37.162" endtime="20260418 15:33:37.162"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${logs_dir}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20260418 15:33:37.162" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs' ]</msg>
+<msg timestamp="20260418 15:33:37.163" level="INFO" html="true">Directory '&lt;a href="file:///home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/logs"&gt;/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/logs&lt;/a&gt;' already exists.</msg>
+<msg timestamp="20260418 15:33:37.163" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.162" endtime="20260418 15:33:37.163"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${log_path}</var>
+<arg>${logs_dir}/${test_name}.log</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:37.163" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log' ]</msg>
+<msg timestamp="20260418 15:33:37.163" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log'</msg>
+<msg timestamp="20260418 15:33:37.163" level="INFO">${log_path} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log</msg>
+<status status="PASS" starttime="20260418 15:33:37.163" endtime="20260418 15:33:37.163"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>!!!!! Log saved to "${log_path}"</arg>
+<doc>Logs the given message to the console.</doc>
+<msg timestamp="20260418 15:33:37.164" level="TRACE">Arguments: [ '!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log"' ]</msg>
+<msg timestamp="20260418 15:33:37.164" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.163" endtime="20260418 15:33:37.164"/>
+</kw>
+<kw name="Save Cached Log" library="Remote">
+<arg>${log_path}</arg>
+<msg timestamp="20260418 15:33:37.164" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_On_Via_Button_Interrupt.fail0.log' ]</msg>
+<msg timestamp="20260418 15:33:37.171" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:37.164" endtime="20260418 15:33:37.171"/>
+</kw>
+<msg timestamp="20260418 15:33:37.171" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.171"/>
+</kw>
+<msg timestamp="20260418 15:33:37.172" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.172"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.172"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:37.159" endtime="20260418 15:33:37.172"/>
+</if>
+<status status="PASS" starttime="20260418 15:33:37.158" endtime="20260418 15:33:37.172"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:37.158" endtime="20260418 15:33:37.172"/>
+</if>
+<if>
+<branch type="IF" condition="${HOLD_ON_ERROR}">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<var>${res}</var>
+<arg>Run Keyword And Ignore Error</arg>
+<arg>Import Library</arg>
+<arg>Dialogs</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:37.172" endtime="20260418 15:33:37.172"/>
+</kw>
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Run Keywords</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' == 'FAIL'</arg>
+<arg>Log</arg>
+<arg>Couldn't load the Dialogs library - interactive debugging is not possible</arg>
+<arg>console=True</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Open GUI</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Pause Execution</arg>
+<arg>Test failed. Press OK once done debugging.</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Close GUI</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:37.172" endtime="20260418 15:33:37.172"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:37.172" endtime="20260418 15:33:37.172"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:37.172" endtime="20260418 15:33:37.172"/>
+</if>
+<kw name="Reset Emulation" library="Remote">
+<msg timestamp="20260418 15:33:37.172" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:37.232" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:37.172" endtime="20260418 15:33:37.232"/>
+</kw>
+<kw name="Clear Cached Log" library="Remote">
+<msg timestamp="20260418 15:33:37.232" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:37.240" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:37.232" endtime="20260418 15:33:37.240"/>
+</kw>
+<msg timestamp="20260418 15:33:37.240" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:36.070" endtime="20260418 15:33:37.241"/>
+</kw>
+<status status="FAIL" starttime="20260418 15:33:25.605" endtime="20260418 15:33:37.241">InvalidOperationException: Terminal tester failed!
+
+Full report:
+([host: 4/18/2026 3:33:27 PM, virt:       0] Attached to UART event: success)
+[host: 4/18/2026 3:33:28 PM, virt:       0] Hello from STM32 NUCLEO-F411RE...
+[host: 4/18/2026 3:33:28 PM, virt:       0] UART DEBUG CONSOLE (System Ready)
+[host: 4/18/2026 3:33:28 PM, virt:       0] press: CTRL+H for options
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+[host: 4/18/2026 3:33:28 PM, virt:       0] 
+ [[no newline]]
+([host: 4/18/2026 3:33:36 PM, virt:  8101.8] Line containing &gt;&gt;BTN Pressed...&lt;&lt; event: failure)</status>
+</test>
+<test id="s1-t2" name="LED Toggles Off Via Button Interrupt" line="29">
+<kw name="Setup Simulation" type="SETUP">
+<msg timestamp="20260418 15:33:37.241" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="Remote">
+<arg>include ${URI}</arg>
+<msg timestamp="20260418 15:33:37.242" level="TRACE">Arguments: [ 'include @/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/UART_debug_console.resc' ]</msg>
+<msg timestamp="20260418 15:33:37.703" level="TRACE">Return: "Current 'PATH' value is: /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation\n\n"</msg>
+<status status="PASS" starttime="20260418 15:33:37.242" endtime="20260418 15:33:37.703"/>
+</kw>
+<kw name="Create Terminal Tester" library="Remote">
+<arg>${UART}</arg>
+<msg timestamp="20260418 15:33:37.703" level="TRACE">Arguments: [ 'sysbus.usart2' ]</msg>
+<msg timestamp="20260418 15:33:37.705" level="TRACE">Return: 0</msg>
+<status status="PASS" starttime="20260418 15:33:37.703" endtime="20260418 15:33:37.705"/>
+</kw>
+<msg timestamp="20260418 15:33:37.705" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:37.241" endtime="20260418 15:33:37.705"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Press</arg>
+<msg timestamp="20260418 15:33:37.705" level="TRACE">Arguments: [ 'sysbus.gpioc.buttonPC13 Press' ]</msg>
+<msg timestamp="20260418 15:33:37.709" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:37.705" endtime="20260418 15:33:37.709"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Release</arg>
+<msg timestamp="20260418 15:33:37.709" level="TRACE">Arguments: [ 'sysbus.gpioc.buttonPC13 Release' ]</msg>
+<msg timestamp="20260418 15:33:37.711" level="TRACE">Return: ''</msg>
+<status status="PASS" starttime="20260418 15:33:37.709" endtime="20260418 15:33:37.711"/>
+</kw>
+<kw name="Wait For Line On Uart" library="Remote">
+<arg>LED ON</arg>
+<msg timestamp="20260418 15:33:37.712" level="TRACE">Arguments: [ 'LED ON' ]</msg>
+<status status="FAIL" starttime="20260418 15:33:37.712" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Press</arg>
+<status status="NOT RUN" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>${BUTTON} Release</arg>
+<status status="NOT RUN" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Wait For Line On Uart" library="Remote">
+<arg>LED OFF</arg>
+<status status="NOT RUN" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<var>${state}</var>
+<arg>${LED} State</arg>
+<status status="NOT RUN" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${state}</arg>
+<arg>False</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.083"/>
+</kw>
+<kw name="Test Teardown" library="renode-keywords" type="TEARDOWN">
+<msg timestamp="20260418 15:33:40.084" level="TRACE">Arguments: [  ]</msg>
+<kw name="Stop Profiler" library="renode-keywords">
+<msg timestamp="20260418 15:33:40.084" level="TRACE">Arguments: [  ]</msg>
+<if>
+<branch type="IF" condition="${PROFILER_PROCESS}">
+<kw name="Terminate Process" library="Process">
+<arg>${PROFILER_PROCESS}</arg>
+<doc>Stops the process gracefully or forcefully.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.084" endtime="20260418 15:33:40.084"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${PROFILER_PROCESS}</arg>
+<arg>None</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.084" endtime="20260418 15:33:40.084"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:40.084" endtime="20260418 15:33:40.084"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.084" endtime="20260418 15:33:40.084"/>
+</if>
+<msg timestamp="20260418 15:33:40.084" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.084" endtime="20260418 15:33:40.085"/>
+</kw>
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<var>${failed}</var>
+<arg>Set Variable</arg>
+<arg>True</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Arguments: [ 'Set Variable' | 'True' ]</msg>
+<kw name="Set Variable" library="BuiltIn">
+<arg>True</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Arguments: [ 'True' ]</msg>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Return: 'True'</msg>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.085"/>
+</kw>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Return: 'True'</msg>
+<msg timestamp="20260418 15:33:40.085" level="INFO">${failed} = True</msg>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.085"/>
+</kw>
+<if>
+<branch type="IF" condition="${failed}">
+<kw name="Strip String" library="String">
+<var>${message}</var>
+<arg>${TEST_MESSAGE}</arg>
+<arg>mode=right</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Arguments: [ 'Execution terminated by signal' | mode='right' ]</msg>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Return: 'Execution terminated by signal'</msg>
+<msg timestamp="20260418 15:33:40.085" level="INFO">${message} = Execution terminated by signal</msg>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.085"/>
+</kw>
+<kw name="Set Test Message" library="BuiltIn">
+<arg>${message}</arg>
+<doc>Sets message for the current test case.</doc>
+<msg timestamp="20260418 15:33:40.085" level="TRACE">Arguments: [ 'Execution terminated by signal' ]</msg>
+<msg timestamp="20260418 15:33:40.085" level="INFO">Set test message to:
+Execution terminated by signal</msg>
+<msg timestamp="20260418 15:33:40.086" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.086"/>
+</kw>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.086"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.085" endtime="20260418 15:33:40.086"/>
+</if>
+<kw name="Run Keyword If Timeout Occurred" library="BuiltIn">
+<var>${timed_out}</var>
+<arg>Set Variable</arg>
+<arg>True</arg>
+<doc>Runs the given keyword if either a test or a keyword timeout has occurred.</doc>
+<msg timestamp="20260418 15:33:40.086" level="TRACE">Arguments: [ 'Set Variable' | 'True' ]</msg>
+<msg timestamp="20260418 15:33:40.086" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:40.086" level="INFO">${timed_out} = None</msg>
+<status status="PASS" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.086"/>
+</kw>
+<if>
+<branch type="IF" condition="${timed_out}">
+<return>
+<status status="NOT RUN" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.086"/>
+</return>
+<status status="NOT RUN" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.086"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.086"/>
+</if>
+<if>
+<branch type="IF" condition="${CREATE_SNAPSHOT_ON_FAIL}">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Create Snapshot Of Failed Test</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:40.086" level="TRACE">Arguments: [ 'Create Snapshot Of Failed Test' ]</msg>
+<kw name="Create Snapshot Of Failed Test" library="renode-keywords">
+<msg timestamp="20260418 15:33:40.086" level="TRACE">Arguments: [  ]</msg>
+<kw name="Return From Keyword If" library="BuiltIn">
+<arg>'skipped' in @{TEST TAGS}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<msg timestamp="20260418 15:33:40.087" level="TRACE">Arguments: [ "'skipped' in []" ]</msg>
+<msg timestamp="20260418 15:33:40.087" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.087"/>
+</kw>
+<kw name="Get Variable Value" library="BuiltIn">
+<var>${retry_index}</var>
+<arg>\${RETRYFAILED_RETRY_INDEX}</arg>
+<arg>0</arg>
+<doc>Returns variable value or ``default`` if the variable does not exist.</doc>
+<msg timestamp="20260418 15:33:40.087" level="TRACE">Arguments: [ '\\${RETRYFAILED_RETRY_INDEX}' | '0' ]</msg>
+<msg timestamp="20260418 15:33:40.087" level="TRACE">Return: '0'</msg>
+<msg timestamp="20260418 15:33:40.087" level="INFO">${retry_index} = 0</msg>
+<status status="PASS" starttime="20260418 15:33:40.087" endtime="20260418 15:33:40.087"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${test_name}</var>
+<arg>${SUITE NAME}.${TEST NAME}.fail${retry_index}.save</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0.save' ]</msg>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Return: 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:40.088" level="INFO">${test_name} = UART_debug_console.LED Toggles Off Via Button Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:40.087" endtime="20260418 15:33:40.088"/>
+</kw>
+<kw name="Sanitize Test Name" library="renode-keywords">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Arguments: [ ${test_name}='UART_debug_console.LED Toggles Off Via Button Interrupt.fail0.save' ]</msg>
+<kw name="Replace String" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0.save' | ' ' | '_' ]</msg>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:40.088" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:40.088" endtime="20260418 15:33:40.088"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>[/""]</arg>
+<arg>-</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Arguments: [ 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save' | '[/""]' | '-' ]</msg>
+<msg timestamp="20260418 15:33:40.088" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:40.088" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:40.088" endtime="20260418 15:33:40.088"/>
+</kw>
+<return>
+<value>${test_name}</value>
+<status status="PASS" starttime="20260418 15:33:40.088" endtime="20260418 15:33:40.088"/>
+</return>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save'</msg>
+<msg timestamp="20260418 15:33:40.089" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save</msg>
+<status status="PASS" starttime="20260418 15:33:40.088" endtime="20260418 15:33:40.089"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${snapshots_dir}</var>
+<arg>${RESULTS_DIRECTORY}/snapshots</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots' ]</msg>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots'</msg>
+<msg timestamp="20260418 15:33:40.089" level="INFO">${snapshots_dir} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots</msg>
+<status status="PASS" starttime="20260418 15:33:40.089" endtime="20260418 15:33:40.089"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${snapshots_dir}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots' ]</msg>
+<msg timestamp="20260418 15:33:40.089" level="INFO" html="true">Directory '&lt;a href="file:///home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/snapshots"&gt;/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/snapshots&lt;/a&gt;' already exists.</msg>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.089" endtime="20260418 15:33:40.089"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${snapshot_path}</var>
+<arg>"${snapshots_dir}/${test_name}"</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Arguments: [ '"/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:40.089" level="TRACE">Return: '"/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"'</msg>
+<msg timestamp="20260418 15:33:40.089" level="INFO">${snapshot_path} = "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"</msg>
+<status status="PASS" starttime="20260418 15:33:40.089" endtime="20260418 15:33:40.089"/>
+</kw>
+<kw name="Execute Command" library="Remote">
+<arg>Save ${snapshot_path}</arg>
+<msg timestamp="20260418 15:33:40.090" level="TRACE">Arguments: [ 'Save "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:40.141" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:40.141" level="FAIL">Connection to remote server broken: [Errno 111] Connection refused</msg>
+<msg timestamp="20260418 15:33:40.141" level="DEBUG">Traceback (most recent call last):
+  None
+RuntimeError: Connection to remote server broken: [Errno 111] Connection refused</msg>
+<status status="FAIL" starttime="20260418 15:33:40.089" endtime="20260418 15:33:40.141"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>!!!!! Emulation's state saved to ${snapshot_path}</arg>
+<doc>Logs the given message to the console.</doc>
+<msg timestamp="20260418 15:33:40.142" level="TRACE">Arguments: [ '!!!!! Emulation\'s state saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//snapshots/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.save"' ]</msg>
+<msg timestamp="20260418 15:33:40.142" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.141" endtime="20260418 15:33:40.142"/>
+</kw>
+<msg timestamp="20260418 15:33:40.142" level="TRACE">Return: None</msg>
+<status status="FAIL" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.142"/>
+</kw>
+<msg timestamp="20260418 15:33:40.142" level="TRACE">Return: None</msg>
+<status status="FAIL" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.142"/>
+</kw>
+<status status="FAIL" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.142"/>
+</branch>
+<status status="FAIL" starttime="20260418 15:33:40.086" endtime="20260418 15:33:40.142"/>
+</if>
+<if>
+<branch type="IF" condition="${SAVE_LOGS}">
+<if>
+<branch type="IF" condition="&quot;${SAVE_LOGS_WHEN}&quot; == &quot;Always&quot;">
+<kw name="Save Test Log" library="renode-keywords">
+<status status="NOT RUN" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.142"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.142"/>
+</branch>
+<branch type="ELSE IF" condition="&quot;${SAVE_LOGS_WHEN}&quot; == &quot;Fail&quot;">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Save Test Log</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<msg timestamp="20260418 15:33:40.143" level="TRACE">Arguments: [ 'Save Test Log' ]</msg>
+<kw name="Save Test Log" library="renode-keywords">
+<msg timestamp="20260418 15:33:40.143" level="TRACE">Arguments: [  ]</msg>
+<kw name="Return From Keyword If" library="BuiltIn">
+<arg>'skipped' in @{TEST TAGS}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<msg timestamp="20260418 15:33:40.143" level="TRACE">Arguments: [ "'skipped' in []" ]</msg>
+<msg timestamp="20260418 15:33:40.143" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.143" endtime="20260418 15:33:40.143"/>
+</kw>
+<kw name="Get Variable Value" library="BuiltIn">
+<var>${retry_index}</var>
+<arg>\${RETRYFAILED_RETRY_INDEX}</arg>
+<arg>0</arg>
+<doc>Returns variable value or ``default`` if the variable does not exist.</doc>
+<msg timestamp="20260418 15:33:40.143" level="TRACE">Arguments: [ '\\${RETRYFAILED_RETRY_INDEX}' | '0' ]</msg>
+<msg timestamp="20260418 15:33:40.144" level="TRACE">Return: '0'</msg>
+<msg timestamp="20260418 15:33:40.144" level="INFO">${retry_index} = 0</msg>
+<status status="PASS" starttime="20260418 15:33:40.143" endtime="20260418 15:33:40.144"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${test_name}</var>
+<arg>${SUITE NAME}.${TEST NAME}.fail${retry_index}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.144" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0' ]</msg>
+<msg timestamp="20260418 15:33:40.144" level="TRACE">Return: 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:40.144" level="INFO">${test_name} = UART_debug_console.LED Toggles Off Via Button Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:40.144" endtime="20260418 15:33:40.144"/>
+</kw>
+<kw name="Sanitize Test Name" library="renode-keywords">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<msg timestamp="20260418 15:33:40.144" level="TRACE">Arguments: [ ${test_name}='UART_debug_console.LED Toggles Off Via Button Interrupt.fail0' ]</msg>
+<kw name="Replace String" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>${SPACE}</arg>
+<arg>_</arg>
+<doc>Replaces ``search_for`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:40.144" level="TRACE">Arguments: [ 'UART_debug_console.LED Toggles Off Via Button Interrupt.fail0' | ' ' | '_' ]</msg>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:40.145" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:40.144" endtime="20260418 15:33:40.145"/>
+</kw>
+<kw name="Replace String Using Regexp" library="String">
+<var>${test_name}</var>
+<arg>${test_name}</arg>
+<arg>[/""]</arg>
+<arg>-</arg>
+<doc>Replaces ``pattern`` in the given ``string`` with ``replace_with``.</doc>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Arguments: [ 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0' | '[/""]' | '-' ]</msg>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:40.145" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:40.145" endtime="20260418 15:33:40.145"/>
+</kw>
+<return>
+<value>${test_name}</value>
+<status status="PASS" starttime="20260418 15:33:40.145" endtime="20260418 15:33:40.145"/>
+</return>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Return: 'UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0'</msg>
+<msg timestamp="20260418 15:33:40.145" level="INFO">${test_name} = UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0</msg>
+<status status="PASS" starttime="20260418 15:33:40.144" endtime="20260418 15:33:40.145"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${logs_dir}</var>
+<arg>${RESULTS_DIRECTORY}/logs</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs' ]</msg>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs'</msg>
+<msg timestamp="20260418 15:33:40.145" level="INFO">${logs_dir} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs</msg>
+<status status="PASS" starttime="20260418 15:33:40.145" endtime="20260418 15:33:40.145"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${logs_dir}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20260418 15:33:40.145" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs' ]</msg>
+<msg timestamp="20260418 15:33:40.146" level="INFO" html="true">Directory '&lt;a href="file:///home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/logs"&gt;/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation/logs&lt;/a&gt;' already exists.</msg>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.145" endtime="20260418 15:33:40.146"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${log_path}</var>
+<arg>${logs_dir}/${test_name}.log</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log' ]</msg>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Return: '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log'</msg>
+<msg timestamp="20260418 15:33:40.146" level="INFO">${log_path} = /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log</msg>
+<status status="PASS" starttime="20260418 15:33:40.146" endtime="20260418 15:33:40.146"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>!!!!! Log saved to "${log_path}"</arg>
+<doc>Logs the given message to the console.</doc>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Arguments: [ '!!!!! Log saved to "/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log"' ]</msg>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.146" endtime="20260418 15:33:40.146"/>
+</kw>
+<kw name="Save Cached Log" library="Remote">
+<arg>${log_path}</arg>
+<msg timestamp="20260418 15:33:40.146" level="TRACE">Arguments: [ '/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_debug_console/renode-emulation//logs/UART_debug_console.LED_Toggles_Off_Via_Button_Interrupt.fail0.log' ]</msg>
+<msg timestamp="20260418 15:33:40.147" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:40.147" level="FAIL">Connection to remote server broken: [Errno 111] Connection refused</msg>
+<msg timestamp="20260418 15:33:40.147" level="DEBUG">Traceback (most recent call last):
+  None
+RuntimeError: Connection to remote server broken: [Errno 111] Connection refused</msg>
+<status status="FAIL" starttime="20260418 15:33:40.146" endtime="20260418 15:33:40.147"/>
+</kw>
+<msg timestamp="20260418 15:33:40.147" level="TRACE">Return: None</msg>
+<status status="FAIL" starttime="20260418 15:33:40.143" endtime="20260418 15:33:40.147"/>
+</kw>
+<msg timestamp="20260418 15:33:40.147" level="TRACE">Return: None</msg>
+<status status="FAIL" starttime="20260418 15:33:40.143" endtime="20260418 15:33:40.147"/>
+</kw>
+<status status="FAIL" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.147"/>
+</branch>
+<status status="FAIL" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.147"/>
+</if>
+<status status="FAIL" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.147"/>
+</branch>
+<status status="FAIL" starttime="20260418 15:33:40.142" endtime="20260418 15:33:40.147"/>
+</if>
+<if>
+<branch type="IF" condition="${HOLD_ON_ERROR}">
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<var>${res}</var>
+<arg>Run Keyword And Ignore Error</arg>
+<arg>Import Library</arg>
+<arg>Dialogs</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.148" endtime="20260418 15:33:40.148"/>
+</kw>
+<kw name="Run Keyword If Test Failed" library="BuiltIn">
+<arg>Run Keywords</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' == 'FAIL'</arg>
+<arg>Log</arg>
+<arg>Couldn't load the Dialogs library - interactive debugging is not possible</arg>
+<arg>console=True</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Open GUI</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Pause Execution</arg>
+<arg>Test failed. Press OK once done debugging.</arg>
+<arg>AND</arg>
+<arg>Run Keyword If</arg>
+<arg>'${res[0]}' != 'FAIL'</arg>
+<arg>Close GUI</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.148" endtime="20260418 15:33:40.148"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:40.147" endtime="20260418 15:33:40.148"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.147" endtime="20260418 15:33:40.148"/>
+</if>
+<kw name="Reset Emulation" library="Remote">
+<msg timestamp="20260418 15:33:40.148" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:40.149" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:40.149" level="FAIL">Connection to remote server broken: [Errno 111] Connection refused</msg>
+<msg timestamp="20260418 15:33:40.149" level="DEBUG">Traceback (most recent call last):
+  None
+RuntimeError: Connection to remote server broken: [Errno 111] Connection refused</msg>
+<status status="FAIL" starttime="20260418 15:33:40.148" endtime="20260418 15:33:40.149"/>
+</kw>
+<kw name="Clear Cached Log" library="Remote">
+<msg timestamp="20260418 15:33:40.149" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20260418 15:33:40.149" level="TRACE">Return: None</msg>
+<msg timestamp="20260418 15:33:40.150" level="FAIL">Connection to remote server broken: [Errno 111] Connection refused</msg>
+<msg timestamp="20260418 15:33:40.150" level="DEBUG">Traceback (most recent call last):
+  None
+RuntimeError: Connection to remote server broken: [Errno 111] Connection refused</msg>
+<status status="FAIL" starttime="20260418 15:33:40.149" endtime="20260418 15:33:40.150"/>
+</kw>
+<msg timestamp="20260418 15:33:40.150" level="TRACE">Return: None</msg>
+<status status="FAIL" starttime="20260418 15:33:40.083" endtime="20260418 15:33:40.150">Several failures occurred:
+
+1) Connection to remote server broken: [Errno 111] Connection refused
+
+2) Connection to remote server broken: [Errno 111] Connection refused
+
+3) Connection to remote server broken: [Errno 111] Connection refused
+
+4) Connection to remote server broken: [Errno 111] Connection refused</status>
+</kw>
+<status status="FAIL" starttime="20260418 15:33:37.241" endtime="20260418 15:33:40.150">Execution terminated by signal
+
+Also teardown failed:
+Several failures occurred:
+
+1) Connection to remote server broken: [Errno 111] Connection refused
+
+2) Connection to remote server broken: [Errno 111] Connection refused
+
+3) Connection to remote server broken: [Errno 111] Connection refused
+
+4) Connection to remote server broken: [Errno 111] Connection refused</status>
+</test>
+<test id="s1-t3" name="UART Command Led On" line="42">
+<tag>robot:exit</tag>
+<status status="FAIL" starttime="20260418 15:33:40.150" endtime="20260418 15:33:40.151">Test execution stopped due to a fatal error.</status>
+</test>
+<test id="s1-t4" name="UART Command Led Off" line="49">
+<tag>robot:exit</tag>
+<status status="FAIL" starttime="20260418 15:33:40.151" endtime="20260418 15:33:40.151">Test execution stopped due to a fatal error.</status>
+</test>
+<test id="s1-t5" name="UART Command Echo Message" line="57">
+<tag>robot:exit</tag>
+<status status="FAIL" starttime="20260418 15:33:40.151" endtime="20260418 15:33:40.151">Test execution stopped due to a fatal error.</status>
+</test>
+<test id="s1-t6" name="UART Command Sysinfo" line="62">
+<tag>robot:exit</tag>
+<status status="FAIL" starttime="20260418 15:33:40.151" endtime="20260418 15:33:40.152">Test execution stopped due to a fatal error.</status>
+</test>
+<test id="s1-t7" name="UART Help Menu Via Ctrl+H" line="68">
+<tag>robot:exit</tag>
+<status status="FAIL" starttime="20260418 15:33:40.152" endtime="20260418 15:33:40.152">Test execution stopped due to a fatal error.</status>
+</test>
+<kw name="Teardown" library="renode-keywords" type="TEARDOWN">
+<msg timestamp="20260418 15:33:40.152" level="TRACE">Arguments: [  ]</msg>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="Stop Remote Server" library="Remote">
+<status status="NOT RUN" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</if>
+<if>
+<branch type="IF" condition="not ${SKIP_RUNNING_SERVER}">
+<kw name="Wait For Process" library="Process">
+<doc>Waits for the process to complete or to reach the given timeout.</doc>
+<status status="NOT RUN" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</kw>
+<status status="NOT RUN" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</branch>
+<status status="PASS" starttime="20260418 15:33:40.153" endtime="20260418 15:33:40.153"/>
+</if>
+<msg timestamp="20260418 15:33:40.153" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20260418 15:33:40.152" endtime="20260418 15:33:40.153"/>
+</kw>
+<meta name="HotSpot_Action">-</meta>
+<status status="FAIL" starttime="20260418 15:33:25.060" endtime="20260418 15:33:40.153"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="7" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="7" skip="0" id="s1" name="Test Suite">Test Suite</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
