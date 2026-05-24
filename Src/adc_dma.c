@@ -23,7 +23,7 @@
 #define LIFCR_CTCIF0	(1U << 5)
 
 uint16_t adc_raw_data[NUM_OF_CHANNELS];
-uint8_t g_adc_rx_cmplt;
+volatile uint8_t g_adc_rx_cmplt;
 
 void adc_dma_init(void)
 {
