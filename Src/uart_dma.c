@@ -41,7 +41,7 @@ static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
 
 //char uart_data_buffer[UART_DATA_BUFF_SIZE];
 
-uint8_t g_rx_cmplt;
+//!!! uint8_t g_rx_cmplt;
 uint8_t g_tx_cmplt;
 
 uint8_t g_uart_cmplt;

@@ -19,8 +19,11 @@
 #define DMA_SFCR_DMDIS		(1U<<2)
 #define ADC_SEQ_LEN_1  		0x00
 
+#define LISR_TCIF0	(1U << 5)
+#define LIFCR_CTCIF0	(1U << 5)
 
 uint16_t adc_raw_data[NUM_OF_CHANNELS];
+uint8_t g_adc_rx_cmplt;
 
 void adc_dma_init(void)
 {
@@ -86,6 +89,16 @@ void adc_dma_init(void)
 	/*Set number of transfer*/
 	DMA2_Stream0->NDTR = (uint16_t)NUM_OF_CHANNELS;
 
+	//!!!!!!!!!!!!!!
+	/* ---> STEP 1: Enable DMA Transfer Complete Interrupt <--- */
+	    DMA2_Stream0->CR |= DMA_SCR_TCIE;
+
+	//!!!!!!!!!!!!!!
+	    /* ---> STEP 2: Configure NVIC for DMA2 Stream 0 <--- */
+	        // Enable IRQ and set priority (adjust priority as needed for your application)
+	        NVIC_SetPriority(DMA2_Stream0_IRQn, 0);
+	        NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
 	/*Enable DMA stream*/
 	DMA2_Stream0->CR |= DMA_SCR_EN;
 
@@ -97,4 +110,23 @@ void adc_dma_init(void)
 	ADC1->CR2 |=CR2_SWSTART;
 
 
+}
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void DMA2_Stream0_IRQHandler(void)
+{
+    // Check if the Transfer Complete Interrupt Flag for Stream 0 is set
+    //if (DMA2->LISR & (1U << 5))
+    if (DMA2->LISR & LISR_TCIF0)
+    {
+    	//!!!!!!!!!!!!!!!
+        g_adc_rx_cmplt = 1;
+
+        /* ---> STEP 3: Clear the flag <--- */
+        // Writing to LIFCR (Low Interrupt Flag Clear Register) clears the flag
+        DMA2->LIFCR |= LIFCR_CTCIF0;
+        // Your data processing goes here!
+        // adc_raw_data now contains fresh, fully updated conversion values.
+
+    }
 }

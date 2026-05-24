@@ -32,9 +32,12 @@
 #include "uart_dma.h"
 #include "adc_dma.h"
 
-extern uint8_t g_rx_cmplt;
+//!!! extern uint8_t g_rx_cmplt;
 extern uint8_t g_uart_cmplt;
 extern uint8_t g_tx_cmplt;
+
+//!!!
+extern uint8_t g_adc_rx_cmplt;
 
 //extern char uart_data_buffer[UART_DATA_BUFF_SIZE];
 char msg_buff[150] ={'\0'};
@@ -61,16 +64,22 @@ int main(void)
 	while(1)
 	{
 
+		//!!!
 		//if(g_rx_cmplt)
-		if(1) //!!!
+	//	if(1) //!!!
+		if(g_adc_rx_cmplt) //!!! >>> interrupt version of adc is much slower
 		{
 			//sprintf(msg_buff, "Message received : %s \r\n",uart_data_buffer);
-			sprintf(msg_buff, "Photoresistor Value : %d \n\r ",adc_raw_data[0]);
+			sprintf(msg_buff, "Photoresistor Value : %d \n\r",adc_raw_data[0]);
 
 		for( int i = 0; i < 90000; i++){}
-			g_rx_cmplt = 0;
+			//!!!    g_rx_cmplt = 0;
 			g_tx_cmplt = 0;
 			g_uart_cmplt = 0;
+
+			//!!!
+			g_adc_rx_cmplt = 0;
+
 			dma1_stream6_uart_tx_config((uint32_t)msg_buff,strlen(msg_buff));
 		    while(!g_tx_cmplt){}
 
