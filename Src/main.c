@@ -73,7 +73,7 @@ int main(void)
 		system_health_flags |= HEALTH_TIMER_OK;
 
 		/* =========================================
-		           STATE 2: TRIGGER DMA AND WAIT FOR DATA
+		    STATE 2: TRIGGER DMA AND WAIT FOR DATA
 		   ========================================= */
 		// Kick off the asynchronous DMA read
 		adxl_read_values(ADXL345_REG_DATA_START);
