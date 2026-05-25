@@ -125,7 +125,7 @@ int main(void)
 		    system_health_flags |= HEALTH_UART_OK;
 
 		    /* =========================================
-		                       STATE 4: SYSTEM HEALTH CHECK
+		            	STATE 4: SYSTEM HEALTH CHECK
 		       ========================================= */
 		    // Only feed the watchdog if ALL tasks completed this cycle.
 		    if (system_health_flags == HEALTH_ALL_OK)
