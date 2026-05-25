@@ -33,34 +33,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := UART_DMA
+BUILD_ARTIFACT_NAME := SENSOR_NODE
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-UART_DMA.elf \
+SENSOR_NODE.elf \
 
 MAP_FILES += \
-UART_DMA.map \
+SENSOR_NODE.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-UART_DMA.list \
+SENSOR_NODE.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: UART_DMA.elf secondary-outputs
+main-build: SENSOR_NODE.elf secondary-outputs
 
 # Tool invocations
-UART_DMA.elf UART_DMA.map: $(OBJS) $(USER_OBJS) /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "UART_DMA.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UART_DMA.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SENSOR_NODE.elf SENSOR_NODE.map: $(OBJS) $(USER_OBJS) /home/hanna/STM32CubeIDE/workspace_1.13.0/SENSOR_NODE/STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SENSOR_NODE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/hanna/STM32CubeIDE/workspace_1.13.0/SENSOR_NODE/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SENSOR_NODE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -69,14 +69,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-UART_DMA.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "UART_DMA.list"
+SENSOR_NODE.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "SENSOR_NODE.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) UART_DMA.elf UART_DMA.list UART_DMA.map default.size.stdout
+	-$(RM) SENSOR_NODE.elf SENSOR_NODE.list SENSOR_NODE.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
