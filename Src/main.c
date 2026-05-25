@@ -10,7 +10,7 @@
 extern volatile uint8_t g_uart_cmplt;
 extern volatile uint8_t g_tx_cmplt;
 extern volatile uint8_t g_adc_rx_cmplt;
-extern volatile uint8_t timer_trigger_flag = 0;
+extern volatile uint8_t timer_trigger_flag;
 
 //extern char uart_data_buffer[UART_DATA_BUFF_SIZE];
 char msg_buff[150] ={'\0'};
