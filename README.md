@@ -1,8 +1,8 @@
-# Bare-Metal UART Debug Console
+# Interrupt-Driven Firmware Sensor Fusion Node
 
-This is a bare-metal interrupt-driven UART Debug Console written in C includes Button-LED logic, UART-based control of the on-board LED echoing strings from the host PC terminal, and supports debug messages from the firmware to a host PC terminal using programs such as PuTTY or minicom. The debug console uses direct register access and is written for the STM Nucleo-F411RE Development Board and a virtualized version of that board in Renode.
+This low-power bare-metal firmware for an STM32 sensor fusion architecture, integrating a ADXL345 Accelerometer via I2C and ambient photoresistors via ADC. It is implemented using a non-blocking, timer-timer periodic sampling loop with a DMA-backed UART console to maximize CPU sleep cycles and eliminate polling bottlenecks. It integrates an independent hardware watchdog timer and fault-handling routines to ensure high availability and is virtualized via Renode with logic validation through the Robot Framework.
 
-[![Bare-Metal-STM32-UART-Debug-Console](https://i9.ytimg.com/vi/q3SN33JRCC0/mqdefault.jpg?sqp=CMTo9c4G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgUyhHMA8=&rs=AOn4CLB89l6lOf_aPKXerJyRa-ZBi8kZEA)](https://www.youtube.com/watch?v=J2Zf5zxb7cU)
+[![Interrupt-Driven Firmware Sensor Fusion Node](https://i3.ytimg.com/vi/inuAd4msyZs/maxresdefault.jpg)](https://www.youtube.com/watch?v=inuAd4msyZs)
 
 
 ## Table of Contents
@@ -19,17 +19,17 @@ To run this repository locally, follow these steps:
 1. Clone the repository 
 using HTTPS:
     ```sh
-    git clone https://github.com/tmooney84/Bare-Metal-STM32-UART-Debug-Console.git
+    https://github.com/tmooney84/STM32-Baremetal-C-Sensor-Fusion-Node-Firmware.git
     ```
 
 using SSH:
     ```sh
-    git clone git@github.com:tmooney84/Bare-Metal-STM32-UART-Debug-Console.git 
+    git@github.com:tmooney84/STM32-Baremetal-C-Sensor-Fusion-Node-Firmware.git 
     ```
 
 2. Navigate to the project directory:
     ```sh
-    cd /Bare-Metal-STM32-UART-Debug-Console
+    cd /STM32-Baremetal-C-Sensor-Fusion-Node-Firmware
     ```
 
 ## Usage
