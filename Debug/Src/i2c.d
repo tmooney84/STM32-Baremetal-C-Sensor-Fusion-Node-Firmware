@@ -1,4 +1,4 @@
-Src/main.o: ../Src/main.c ../Inc/uart_dma.h \
+Src/i2c.o: ../Src/i2c.c \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/core_cm4.h \
@@ -7,8 +7,7 @@ Src/main.o: ../Src/main.c ../Inc/uart_dma.h \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/cmsis_gcc.h \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/mpu_armv7.h \
  /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h \
- ../Inc/adc_dma.h ../Inc/adxl345.h ../Inc/i2c.h ../Inc/tim.h
-../Inc/uart_dma.h:
+ ../Inc/adxl345.h ../Inc/i2c.h
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h:
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/core_cm4.h:
@@ -17,7 +16,5 @@ Src/main.o: ../Src/main.c ../Inc/uart_dma.h \
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/cmsis_gcc.h:
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Include/mpu_armv7.h:
 /home/hanna/STM32CubeIDE/workspace_1.13.0/UART_DMA/chip_headers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h:
-../Inc/adc_dma.h:
 ../Inc/adxl345.h:
 ../Inc/i2c.h:
-../Inc/tim.h:

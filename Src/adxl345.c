@@ -9,12 +9,13 @@
  * 5V+   ----  VCC
  * */
 
-
 // Variable to store single byte of data
 char data;
-
-// Buffer to store multiple bytes of data from the ADXL345
 uint8_t data_buffer[ADXL_BUFF_SIZE];
+
+volatile int16_t accel_x, accel_y, accel_z;
+volatile double accel_x_g, accel_y_g, accel_z_g;
+volatile uint8_t data_ready_flag = 0;
 
 void adxl_read_address (uint8_t reg)
 {
@@ -26,16 +27,13 @@ void adxl_write (uint8_t reg, char value)
 {
 	char data[1];
 	data[0] = value;
-
 	i2c1_burst_write( ADXL345_DEVICE_ADDR, reg,1, data) ;
 }
 
 void adxl_read_values (uint8_t reg)
 {
     // Read 6 bytes into wthe data buffer
-
-	i2c1_burst_read(ADXL345_DEVICE_ADDR, reg, 6,(char *)data_buffer);
-
+	i2c1_burst_read_dma(ADXL345_DEVICE_ADDR, reg, ADXL_BUFF_SIZE, (char *)data_buffer);
 }
 
 
@@ -55,4 +53,19 @@ void adxl_init (void)
 
 	/*Configure power control measure bit*/
 	adxl_write (ADXL345_REG_POWER_CTL, ADXL345_MEASURE_BIT);
+}
+
+void i2c1_rx_complete_callback(void) {
+    // Combine high and low bytes
+    accel_x = (int16_t)((data_buffer[1] << 8) | data_buffer[0]);
+    accel_y = (int16_t)((data_buffer[3] << 8) | data_buffer[2]);
+    accel_z = (int16_t)((data_buffer[5] << 8) | data_buffer[4]);
+
+    // Convert raw data to g values
+    accel_x_g = accel_x * 0.0078;
+    accel_y_g = accel_y * 0.0078;
+    accel_z_g = accel_z * 0.0078;
+
+    // Signal to the main loop that new data is ready to be used
+    data_ready_flag = 1;
 }

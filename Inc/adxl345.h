@@ -20,6 +20,9 @@
 
 #define	   ADXL_BUFF_SIZE				6
 
+extern volatile int16_t accel_x, accel_y, accel_z;
+extern volatile double accel_x_g, accel_y_g, accel_z_g;
+extern volatile uint8_t data_ready_flag;
 
 void adxl_init(void);
 void adxl_read_values(uint8_t reg);

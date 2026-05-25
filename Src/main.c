@@ -14,8 +14,6 @@ extern volatile uint8_t timer_trigger_flag = 0;
 
 //extern char uart_data_buffer[UART_DATA_BUFF_SIZE];
 char msg_buff[150] ={'\0'};
-
-//!!!!!!!!
 extern uint16_t adc_raw_data[NUM_OF_CHANNELS];
 
 void enter_sleep_mode(void)
@@ -33,15 +31,13 @@ int main(void)
 	uart2_tx_init();
 	dma1_init();
 	adxl_init();
-
-
-	sprintf(msg_buff,"Initialization...cmplt\n\r");
-	dma1_stream6_uart_tx_config((uint32_t)msg_buff,strlen(msg_buff));
-
-	//!!! CAN I PUT THIS WITH THE OTHER INITS without breaking things???
 	adc_dma_init();
 
+	//Start up message
+	sprintf(msg_buff,"Initialization...cmplt\n\r");
+	dma1_stream6_uart_tx_config((uint32_t)msg_buff,strlen(msg_buff));
     while(!g_tx_cmplt){}
+    g_tx_cmplt = 0;
 
     // Initialize our 50ms timer
     tim2_init();
@@ -67,19 +63,17 @@ int main(void)
 		// Kick off the asynchronous DMA read
 		adxl_read_values(ADXL345_REG_DATA_START);
 
-
-		// Go right back to sleep until the DMA hardware tells us it's done
-		__disable_irq();
-
-		//!!! WILL THIS WORK WITH BOTH or data_ready_flag original
-		if(!g_adc_rx_cmplt || !data_ready_flag) //!!! >>> interrupt version of adc is much slower
-		{
-			enter_sleep_mode();
-		}
-		__enable_irq(); // Interrupts are instantly serviced here upon wake-up
-
-		//!!! Checking if the data is ready, if not, go back to sleep.
-		while(!g_adc_rx_cmplt && !data_ready_flag){}
+		// Loop until BOTH flags are true (g_adc_rx_cmplt == 1 AND data_ready_flag == 1)
+		while(!g_adc_rx_cmplt || !data_ready_flag)
+		        {
+		            __disable_irq();
+		            // Double check flags before sleeping to prevent race conditions
+		            if(!g_adc_rx_cmplt || !data_ready_flag)
+		            {
+		                enter_sleep_mode();
+		            }
+		            __enable_irq(); // Handlers run instantly here if an interrupt fired during sleep
+		        }
 
 		/* =========================================
 		           STATE 3: PROCESS DATA
@@ -88,10 +82,7 @@ int main(void)
 		    "Photoresistor Value : %d \n\raccel_x: %d \t accel_y: %d \t accel_z: %d\n\r",
 		    adc_raw_data[0], accel_x, accel_y, accel_z);
 
-		//!!! IS THIS NEEDED... FROM ORIGINAL CODE
-		//for( int i = 0; i < 90000; i++){}
-
-		// 5. Reset the flag for the next cycle
+		// Reset the flag for the next cycle
 			g_tx_cmplt = 0;
 			g_uart_cmplt = 0;
 			g_adc_rx_cmplt = 0;
@@ -99,8 +90,19 @@ int main(void)
 
 
 			dma1_stream6_uart_tx_config((uint32_t)msg_buff,strlen(msg_buff));
-		    while(!g_tx_cmplt){}
 
+			// Go to sleep while UART sends the data
+			while(!g_tx_cmplt)
+				{
+			    	__disable_irq();
+			        if(!g_tx_cmplt)
+			            {
+			                enter_sleep_mode();
+			            }
+			        __enable_irq();
+			     }
+		    g_tx_cmplt = 0;
 		}
+
 	return 0;
 }
