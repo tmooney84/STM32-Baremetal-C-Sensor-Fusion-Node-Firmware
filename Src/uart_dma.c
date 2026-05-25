@@ -107,52 +107,6 @@ void dma1_init(void)
 	NVIC_EnableIRQ(DMA1_Stream6_IRQn);
 }
 
-
-//void dma1_stream5_uart_rx_config(void)
-//{
-//	/*Disable DMA stream*/
-//	DMA1_Stream5->CR &=~DMA_SCR_EN;
-//
-//	/*Wait till DMA Stream is disabled*/
-//	while((DMA1_Stream5->CR & DMA_SCR_EN)){}
-//
-//	/*Clear interrupt flags for stream 5*/
-//	DMA1->HIFCR = HIFCR_CDMEIF5 |HIFCR_CTEIF5|HIFCR_CTCIF5;
-//	/*Set periph address*/
-//	DMA1_Stream5->PAR = (uint32_t)(&(USART2->DR));
-//
-//	/*Set mem address*/
-//	DMA1_Stream5->M0AR = (uint32_t)(&uart_data_buffer);
-//
-//	/*Set number of transfer*/
-//	DMA1_Stream5->NDTR = (uint16_t)UART_DATA_BUFF_SIZE;
-//
-//	/*Select Channel 4*/
-//	DMA1_Stream5->CR &= ~(1u<<25);
-//	DMA1_Stream5->CR &= ~(1u<<26);
-//	DMA1_Stream5->CR |= (1u<<27);
-//
-//	/*Enable memory addr increment*/
-//	DMA1_Stream5->CR |=DMA_SCR_MINC;
-//
-//	/*Enable transfer complete interrupt*/
-//	DMA1_Stream5->CR |= DMA_SCR_TCIE;
-//
-//	/*Enable Circular mode*/
-//	DMA1_Stream5->CR |=DMA_SCR_CIRC;
-//
-//	/*Set transfer direction : Periph to Mem*/
-//	DMA1_Stream5->CR &=~(1U<<6);
-//	DMA1_Stream5->CR &=~(1U<<7);
-//
-//	/*Enable DMA stream*/
-//	DMA1_Stream5->CR |= DMA_SCR_EN;
-//
-//	/*Enable DMA Stream5 Interrupt in NVIC*/
-//	NVIC_EnableIRQ(DMA1_Stream5_IRQn);
-//
-//}
-
 void dma1_stream6_uart_tx_config(uint32_t msg_to_snd, uint32_t msg_len)
 {
 	/*Disable DMA stream*/

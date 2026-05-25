@@ -6,15 +6,23 @@
 #include "stm32f4xx.h"
 #include "adxl345.h"
 #include "tim.h"
+#include "iwdg.h"
 
 extern volatile uint8_t g_uart_cmplt;
 extern volatile uint8_t g_tx_cmplt;
 extern volatile uint8_t g_adc_rx_cmplt;
 extern volatile uint8_t timer_trigger_flag;
 
-//extern char uart_data_buffer[UART_DATA_BUFF_SIZE];
 char msg_buff[150] ={'\0'};
 extern uint16_t adc_raw_data[NUM_OF_CHANNELS];
+
+// --- Watchdog Checkpoint Definitions ---
+#define HEALTH_TIMER_OK   (1U << 0) // Bit 0
+#define HEALTH_SENSORS_OK  (1U << 1) // Bit 1
+#define HEALTH_UART_OK    (1U << 2) // Bit 2
+#define HEALTH_ALL_OK     (HEALTH_TIMER_OK | HEALTH_SENSORS_OK | HEALTH_UART_OK)
+
+uint8_t system_health_flags = 0;
 
 void enter_sleep_mode(void)
 {
@@ -42,6 +50,10 @@ int main(void)
     // Initialize our 50ms timer
     tim2_init();
 
+    //Initialize IWDG right before the while loop to prevent
+    //issues with slow startup
+    iwdg_init();
+
 	while(1)
 
 	{
@@ -56,6 +68,9 @@ int main(void)
 
 		//Clear the flag for the next cycle.
 		timer_trigger_flag = 0;
+
+		// Checkpoint 1: Timer fired successfully
+		system_health_flags |= HEALTH_TIMER_OK;
 
 		/* =========================================
 		           STATE 2: TRIGGER DMA AND WAIT FOR DATA
@@ -74,6 +89,9 @@ int main(void)
 		            }
 		            __enable_irq(); // Handlers run instantly here if an interrupt fired during sleep
 		        }
+
+		// Checkpoint 2: Both ADC and I2C DMAs retrieved data successfully
+		system_health_flags |= HEALTH_SENSORS_OK;
 
 		/* =========================================
 		           STATE 3: PROCESS DATA
@@ -102,6 +120,22 @@ int main(void)
 			        __enable_irq();
 			     }
 		    g_tx_cmplt = 0;
+
+		    // Checkpoint 3: UART DMA transmitted successfully
+		    system_health_flags |= HEALTH_UART_OK;
+
+		    /* =========================================
+		                       STATE 4: SYSTEM HEALTH CHECK
+		       ========================================= */
+		    // Only feed the watchdog if ALL tasks completed this cycle.
+		    if (system_health_flags == HEALTH_ALL_OK)
+		    {
+		    	// Reload the IWDG counter to prevent reset
+		        IWDG->KR = IWDG_KEY_RELOAD;
+
+		        // Reset the flags for the next 50ms cycle
+		        system_health_flags = 0;
+		    }
 		}
 
 	return 0;
